@@ -26,17 +26,29 @@ Every contribution helps the addon move forward. Thank you for being with us!
 
 ## Установка
 
-1. Скопируйте папки `OmniBar` и `OmniBar_Options` в каталог аддонов клиента, например:
-   - `World of Warcraft/_classic_/Interface/AddOns/`
-   - или путь AddOns вашего Ascension-клиента
-2. Убедитесь, что рядом лежат обе папки (Options зависит от основного аддона).
-3. В игре: `/ob` или Interface Options → OmniBar.
+> **EN:**
+1. Completely remove the old `OmniBar` and `OmniBar_Options` folders from the client’s AddOns directory.
+2. Copy **both** folders from this repository:
+   - `OmniBar` (must include `CoA_Cooldowns.lua` and `CoA_Scan.lua`)
+   - `OmniBar_Options`
+3. Fully restart the client (not only `/reload`).
+4. On login you should see: `OmniBar CoA: options panels = General + 21 CoA classes`.
+5. In `/ob`, version should be **CoA 1.1**, and the left list should show Barbarian / Felsworn / Templar, etc. — not Warrior/Mage.
 
-## CoA-классы
+If you still see Warrior / Mage, an old copy of the addon is still in AddOns.
 
-В клиенте CoA классы используют **fileString-токены**, а не отображаемые имена:
+> **RU:**
+1. Полностью удалите старые папки `OmniBar` и `OmniBar_Options` из AddOns клиента.
+2. Скопируйте **обе** папки из этого репозитория:
+   - `OmniBar` (обязательно с файлами `CoA_Cooldowns.lua` и `CoA_Scan.lua`)
+   - `OmniBar_Options`
+3. Полностью перезапустите клиент (не только `/reload`).
+4. В чате при входе должно появиться: `OmniBar CoA: options panels = General + 21 CoA classes`.
+5. В `/ob` версия должна быть **CoA 1.1**, в списке слева — Barbarian / Felsworn / Templar и т.д., без Warrior/Mage.
 
-| Токен | Имя в игре |
+## CoA-class
+
+| Token | Class |
 |---|---|
 | `BARBARIAN` | Barbarian |
 | `WITCHDOCTOR` | Witch Doctor |
@@ -60,22 +72,22 @@ Every contribution helps the addon move forward. Thank you for being with us!
 | `SPIRITMAGE` | Runemaster |
 | `CHRONOMANCER` | Chronomancer |
 
-Спеки и токены заданы в `OmniBar/OmniBar.lua` (`LOCALIZED_CLASS_SPEC_NAMES`).  
-Кулдауны CoA вынесены в [`OmniBar/CoA_Cooldowns.lua`](OmniBar/CoA_Cooldowns.lua).
+Spec and class + token `OmniBar/OmniBar.lua` (`LOCALIZED_CLASS_SPEC_NAMES`).  
+CD CoA in [`OmniBar/CoA_Cooldowns.lua`](OmniBar/CoA_Cooldowns.lua).
 
-## Структура
+## Structure
 
 ```
 OmniBar/
-  CoA_Cooldowns.lua   # CoA-классы и их кулдауны
-  OmniBar.lua         # логика + WotLK/классические кулдауны + спеки
+  CoA_Cooldowns.lua   # база кулдаунов CoA
+  CoA_Scan.lua        # /obscan, /obclass
+  OmniBar.lua         # логика трекера
   OmniBar.xml
   OmniBar.toc
 OmniBar_Options/
   OmniBar_Options.lua
+  OmniBar_Options.xml
   localization.lua
-tools/
-  fetch_coa_cooldowns.py
 ```
 
 ## Проверка в игре
@@ -90,4 +102,21 @@ tools/
 - Lookup в combat log идёт и по spell ID, и по имени (`cooldownLookup`) — разные ранги с одним именем схлопываются.
 - Таблица `resets` в `OmniBar.lua` сбрасывает связанные CD (как Preparation / Cold Snap); для CoA добавляйте туда по мере нахождения аналогов.
 - Источник данных по спеллам: [coatavern.com](https://coatavern.com).
+
+## Известные ограничения
+
+- `C_CharacterAdvancement.GetAllEntries` может не отдавать отдельные классы (например Knight of Xoroth). Сканер дополнительно снимает **текущий** класс через `GetSpellsByClass` — для полной базы зайдите на альтов нужных классов и повторите `/obscan`.
+- Lookup в combat log идёт по spell ID и по имени; разные ранги с одним именем схлопываются.
+- Таблица `resets` в `OmniBar.lua` (сброс связанных CD) для CoA пока почти пустая — дополняйте по мере нахождения аналогов Preparation / Cold Snap.
+
+## Credits
+
+- **Jordon** — оригинальный OmniBar  
+- **Jammin** — backport на 3.3.5a  
+- Адаптация под Conquest of Azeroth / Ascension
+- https://www.donationalerts.com/r/dreamernazar 
+
+## Лицензия
+
+Исходный OmniBar распространялся как аддон сообщества WoW. Этот форк — неофициальная адаптация для Ascension CoA; используйте на свой страх и риск.
 
