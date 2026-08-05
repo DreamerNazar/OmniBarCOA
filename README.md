@@ -48,43 +48,6 @@ PvP cooldown tracker for Ascension CoA (21 classes) / Трекер кулдау�
 Спеки и токены заданы в `OmniBar/OmniBar.lua` (`LOCALIZED_CLASS_SPEC_NAMES`).  
 Кулдауны CoA вынесены в [`OmniBar/CoA_Cooldowns.lua`](OmniBar/CoA_Cooldowns.lua).
 
-## Как добавить способность
-
-1. Найдите spell ID на [CoA Tavern](https://coatavern.com) (страница спелла, поле `id` / URL `/spell/123456`).
-2. Посмотрите кулдаун: `Cooldown` / `recoveryTime` (мс → секунды: `60000` = 60).
-3. Проверьте `ownerClassFileString` — это токен для поля `class`.
-4. Добавьте строку в `OmniBar/CoA_Cooldowns.lua`:
-
-```lua
-[501380] = { default = true, duration = 60, class = "WITCHHUNTER" }, -- Brand of the Unworthy
-```
-
-- `default = true` — включено сразу в опциях  
-- `default = false` — выключено, можно включить вручную в `/ob`  
-- Комментарий — имя для людей; иконка/название берутся из `GetSpellInfo` в клиенте
-
-5. Перезагрузите UI (`/reload`) и проверьте вкладку класса в опциях.
-
-### Что имеет смысл трекать
-
-Как у классических классов в OmniBar: кики, CC, крупные сейвы и бурсты, мобилити — не весь spellbook.
-
-## Автосбор с CoA Tavern
-
-В репозитории есть скрипт (нужен Python 3 и сеть):
-
-```bash
-# Один класс (Barbarian = 12) — быстрее для проверки
-python tools/fetch_coa_cooldowns.py --class-id 12 --out OmniBar/CoA_Cooldowns.generated.lua
-
-# Все 21 класс (долго: сотни страниц спеллов)
-python tools/fetch_coa_cooldowns.py --min-cd 8 --out OmniBar/CoA_Cooldowns.generated.lua
-```
-
-Скрипт пишет фрагмент Lua. Скопируйте нужные строки в `OmniBarCoA.cooldowns` внутри `CoA_Cooldowns.lua` (не подключайте generated-файл в `.toc` без ревью — там будут лишние спеллы).
-
-ID классов на Tavern: 12–32 (см. [classes](https://coatavern.com/classes)).
-
 ## Структура
 
 ```
