@@ -7,6 +7,21 @@ PvP cooldown tracker for Ascension CoA (21 classes) / Трекер кулдау�
 > **EN:** Enemy cooldown tracker for Ascension Conquest of Azeroth — OmniBar fork with 21 CoA classes  
 > **RU:** Трекер вражеских кулдаунов для Ascension CoA — форк OmniBar под 21 класс
 
+## DONATION
+https://www.donationalerts.com/r/dreamernazar
+
+> **EN:**
+Thank you for your donations!
+Your support helps OmniBarCOA grow — we fix bugs, add new abilities, and make the tracker better for Conquest of Azeroth.
+
+Every contribution helps the addon move forward. Thank you for being with us!
+
+> **RU:**
+Спасибо за ваши донаты!
+Благодаря вашей поддержке OmniBarCOA становится лучше — мы исправляем ошибки, добавляем новые способности и делаем трекер удобнее для Conquest of Azeroth.
+
+Каждый вклад помогает развитию аддона. Спасибо, что вы с нами!
+
 # OmniBar (Conquest of Azeroth)
 
 ## Установка
