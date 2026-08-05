@@ -95,7 +95,7 @@
 						</Anchor>
 					</Anchors>
 				</FontString>
-				<FontString name="$parentVersion" inherits="GameFontHighlightSmall" text="3.3.5a Version">
+				<FontString name="$parentVersion" inherits="GameFontHighlightSmall" text="CoA 1.1">
 					<Anchors>
 						<Anchor point="TOPLEFT" relativeTo="$parentVersionLabel" relativePoint="TOPRIGHT">
 							<Offset>
