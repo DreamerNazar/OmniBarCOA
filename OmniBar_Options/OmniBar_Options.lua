@@ -225,5 +225,121 @@ OmniBarOptions.refresh = function()
 end
 
 
--- Class cooldown tabs are registered by OmniBar.lua (CoA only).
--- Do not create panels from CLASS_SORT_ORDER here.
+--CHANGES:Lanrutcon:Fixed some issues with checkboxes
+local subIndex = 1
+local function CreateSub(name)
+
+	local OptionsPanelFrame
+
+	local index, parent = 1
+	for spellID, cooldown in pairs(OmniBar.cooldowns) do
+		if not cooldown.parent then -- make sure it isn't a child
+			if cooldown.class == name then
+				if not OptionsPanelFrame then
+					OptionsPanelFrame = CreateFrame("Frame", "OmniBarOptionsPanel"..subIndex)
+					OptionsPanelFrame.spells = {}
+					OptionsPanelFrame.parent = "OmniBar"
+					local coaName = (OmniBar.coaClassNames and OmniBar.coaClassNames[name])
+						or (OmniBarCoA and OmniBarCoA.classNames and OmniBarCoA.classNames[name])
+					OptionsPanelFrame.name = LOCALIZED_CLASS_NAMES_MALE[name] or coaName or L[name]
+				end
+				local spell = CreateFrame("CheckButton", "OmniBarOptionsPanel"..subIndex.."Item"..index, OptionsPanelFrame, "OptionsCheckButtonTemplate")
+				local text, _, icon = GetSpellInfo(spellID)
+				if text then
+					-- Truncate long spell names
+					if string.len(text) > 25 then
+						text = string.sub(text, 0, 22) .. "..."
+					end
+					text = CreateSquareTextureMarkup(icon, 22) .. " " .. text
+				else
+					text = CreateSquareTextureMarkup("Interface\\icons\\inv_misc_questionmark", 22) .. " " .. spellID
+				end
+				_G["OmniBarOptionsPanel"..subIndex.."Item"..index.."Text"]:SetText(text)
+				
+				spell:SetScript("OnShow", function(self)
+					if(OmniBar.settings.cooldowns[spellID] and (OmniBar.settings.cooldowns[spellID].enabled or OmniBar.settings.cooldowns[spellID].enabled == false)) then
+						self:SetChecked(OmniBar.settings.cooldowns[spellID].enabled);
+					elseif OmniBar.cooldowns[spellID].default == false then
+						self:SetChecked(false)
+					else
+						self:SetChecked(true);
+					end
+				end);
+				
+				-- Show the spell tooltip
+				spell.spellID = spellID
+				spell:SetScript("OnEnter", function(self)
+					GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+					GameTooltip:SetSpellByID(self.spellID)
+				end)
+				spell:SetScript("OnLeave", function(self)
+					GameTooltip:Hide()
+				end)
+
+				spell.setFunc = function(value)
+					if not OmniBar.settings.cooldowns[spellID] then OmniBar.settings.cooldowns[spellID] = {} end
+					local enabled = false;
+					if value == "1" then
+						enabled = true;
+					end
+					OmniBar.settings.cooldowns[spellID].enabled = enabled
+					if enabled then
+						spell:SetChecked(true);
+						OmniBar_CreateIcon(OmniBar)
+					else
+						spell:SetChecked(false)
+					end
+					OmniBar_RefreshIcons(OmniBar)
+					OmniBar_UpdateIcons(OmniBar)
+				end
+
+				if index > 1 then
+					-- Split into columns if we're showing all cooldowns
+					if (index-1) % 2 == 0 then
+						spell:SetPoint("TOPLEFT", parent, "BOTTOMLEFT", 0, -2)
+						parent = spell
+					else
+						spell:SetPoint("TOPLEFT", left, "TOPLEFT", 190, 0)
+					end
+				else
+					spell:SetPoint("TOPLEFT", 24, -24)
+					parent = spell
+				end
+				left = spell
+				index = index + 1
+				spell.spellID = spellID
+				table.insert(OptionsPanelFrame.spells, spell)
+			end
+		end
+	end
+	
+	if OptionsPanelFrame then
+		OptionsPanelFrame.default = OmniBarOptions.default
+		OptionsPanelFrame.refresh = function(self)
+			for i = 1, #self.spells do
+				self.spells[i]:SetChecked(OmniBar_IsSpellEnabled(OmniBar, self.spells[i].spellID))
+			end
+		end
+		InterfaceOptions_AddCategory(OptionsPanelFrame)
+		subIndex = subIndex + 1
+		InterfaceAddOnsList_Update()
+	end
+end
+
+CreateSub("GENERAL")
+local created = {}
+for i in pairs(CLASS_SORT_ORDER) do
+	local class = CLASS_SORT_ORDER[i]
+	CreateSub(class)
+	created[class] = true
+end
+-- CoA classes may be absent from CLASS_SORT_ORDER on some clients
+local coaOrder = (OmniBar and OmniBar.coaClassOrder)
+	or (OmniBarCoA and OmniBarCoA.classOrder)
+	or {}
+for _, class in ipairs(coaOrder) do
+	if not created[class] then
+		CreateSub(class)
+		created[class] = true
+	end
+end

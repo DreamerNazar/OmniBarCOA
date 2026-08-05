@@ -1,7 +1,6 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
 ..\FrameXML\UI.xsd">
 	<Script file="CoA_Cooldowns.lua"/>
-	<Script file="CoA_Scan.lua"/>
 	<Script file="OmniBar.lua"/>
 	<Frame name="OmniBarTemplate" virtual="true" parent="UIParent" frameStrata="MEDIUM" movable="true" clampedToScreen="true" dontSavePosition="true">
 		<Size>

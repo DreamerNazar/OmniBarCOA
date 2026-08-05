@@ -1,7 +1,7 @@
 ## Interface: 30300
 ## Title: OmniBar Options
 ## Notes: Options Panel for OmniBar (LoadOnDemand)
-## Version: CoA 1.1
+## Version: 3.3.5a Version
 ## Author: Jordon, Backported to 3.3.5a by Jammin
 ## Dependencies: OmniBar
 ## LoadOnDemand: 1
