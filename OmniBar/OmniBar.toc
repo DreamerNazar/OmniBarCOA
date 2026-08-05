@@ -1,7 +1,7 @@
 ## Interface: 30300
 ## Title: OmniBar
-## Notes: Tracks enemy cooldowns
-## Version: 3.3.5a Version
+## Notes: Tracks enemy cooldowns (Conquest of Azeroth)
+## Version: CoA 1.1
 ## Author: Jordon, Backported to 3.3.5a by Jammin
 ## DefaultState: Enabled
 ## SavedVariables: OmniBarDB
